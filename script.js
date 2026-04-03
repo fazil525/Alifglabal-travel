@@ -378,8 +378,8 @@ if (translateContainer && translateBtn) {
             const googleSelect = document.querySelector('.goog-te-combo');
             if (googleSelect) {
                 googleSelect.value = langCode;
-                // Dispatch native change event
-                googleSelect.dispatchEvent(new Event('change'));
+                // Dispatch native change event with bubbling
+                googleSelect.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
             }
         });
     });
