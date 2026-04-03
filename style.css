@@ -884,3 +884,195 @@ h1, h2, h3, h4 {
         height: 36px;
     }
 }
+
+/* --- New Features --- */
+
+/* Custom Translate Dropdown */
+.custom-translate {
+    position: relative;
+    display: inline-block;
+}
+.translate-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--color-surface);
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: var(--font-main);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all var(--transition-fast);
+}
+.header.scrolled .translate-btn, [data-theme="dark"] .translate-btn {
+    color: var(--color-text-main);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+[data-theme="dark"] .header.scrolled .translate-btn {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+.translate-btn:hover {
+    background: rgba(0, 108, 53, 0.1);
+}
+.translate-dropdown {
+    position: absolute;
+    top: 120%;
+    right: 0;
+    background: var(--color-surface);
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    list-style: none;
+    min-width: 150px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all var(--transition-fast);
+    padding: 10px 0;
+    z-index: 100;
+}
+.custom-translate.active .translate-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+.translate-dropdown li {
+    padding: 10px 20px;
+    cursor: pointer;
+    color: var(--color-text-main);
+    transition: background var(--transition-fast);
+}
+.translate-dropdown li:hover {
+    background: rgba(0, 108, 53, 0.1);
+    color: var(--color-primary);
+}
+
+/* Partners Marquee */
+.partners-section {
+    padding: 2rem 0;
+    background: var(--color-surface);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+[data-theme="dark"] .partners-section {
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.partners-marquee {
+    display: flex;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.marquee-content {
+    display: flex;
+    animation: scroll 20s linear infinite;
+    gap: 3rem;
+    padding-left: 3rem;
+}
+.marquee-content span {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    font-family: var(--font-heading);
+    opacity: 0.7;
+    transition: all var(--transition-fast);
+}
+.marquee-content span:hover {
+    opacity: 1;
+    color: var(--color-primary);
+    transform: scale(1.05);
+}
+@keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* Testimonials */
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+.testimonial-card {
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background: var(--color-surface);
+    border: 1px solid rgba(0,0,0,0.05);
+}
+[data-theme="dark"] .testimonial-card {
+    border: 1px solid rgba(255,255,255,0.05);
+}
+.stars {
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+}
+.review-text {
+    font-style: italic;
+    color: var(--color-text-main);
+    line-height: 1.6;
+    flex-grow: 1;
+}
+.reviewer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    padding-top: 1.2rem;
+}
+[data-theme="dark"] .reviewer {
+    border-top-color: rgba(255,255,255,0.05);
+}
+.reviewer-avatar {
+    width: 45px;
+    height: 45px;
+    background: var(--color-primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+.reviewer-info h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--color-secondary);
+}
+.reviewer-info span {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+}
+
+/* WhatsApp Floating Button */
+.whatsapp-float {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #25d366;
+    color: white;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.whatsapp-float:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
+    color: white;
+}
+
+/* Hide Default Google Translate Banner entirely */
+body {
+    top: 0 !important;
+}
+.skiptranslate iframe, .skiptranslate {
+    display: none !important;
+}

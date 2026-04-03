@@ -342,3 +342,43 @@ if (tripForm) {
             });
     });
 }
+
+// --- CUSTOM GOOGLE TRANSLATE DROPDOWN ---
+const translateContainer = document.querySelector('.custom-translate');
+const translateBtn = document.querySelector('.translate-btn');
+const currentLangSpan = document.querySelector('.current-lang');
+const translateOptions = document.querySelectorAll('.translate-dropdown li');
+
+if (translateContainer && translateBtn) {
+    // Toggle dropdown
+    translateBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        translateContainer.classList.toggle('active');
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!translateContainer.contains(e.target)) {
+            translateContainer.classList.remove('active');
+        }
+    });
+
+    // Handle language selection
+    translateOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            const langCode = option.getAttribute('data-lang');
+            
+            // Update UI
+            currentLangSpan.innerText = langCode.toUpperCase();
+            translateContainer.classList.remove('active');
+            
+            // Trigger Google Translate
+            const googleSelect = document.querySelector('.goog-te-combo');
+            if (googleSelect) {
+                googleSelect.value = langCode;
+                // Dispatch native change event
+                googleSelect.dispatchEvent(new Event('change'));
+            }
+        });
+    });
+}
