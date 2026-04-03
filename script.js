@@ -1,4 +1,4 @@
-﻿// Mobile navigation toggle
+// Mobile navigation toggle
 const mobileToggle = document.getElementById('mobile-toggle');
 const nav = document.querySelector('.nav');
 const header = document.getElementById('header');
@@ -98,9 +98,9 @@ let isDarkTheme = localStorage.getItem('theme') === 'dark';
 
 if (isDarkTheme) {
     htmlEl.setAttribute('data-theme', 'dark');
-    themeToggle.innerText = 'â˜€ï¸';
+    themeToggle.innerText = '☀️';
 } else {
-    themeToggle.innerText = 'ðŸŒ™';
+    themeToggle.innerText = '🌙';
 }
 
 if (themeToggle) {
@@ -109,11 +109,11 @@ if (themeToggle) {
         if (isDarkTheme) {
             htmlEl.setAttribute('data-theme', 'dark');
             localStorage.setItem('theme', 'dark');
-            themeToggle.innerText = 'â˜€ï¸';
+            themeToggle.innerText = '☀️';
         } else {
             htmlEl.removeAttribute('data-theme');
             localStorage.removeItem('theme');
-            themeToggle.innerText = 'ðŸŒ™';
+            themeToggle.innerText = '🌙';
         }
     });
 }
@@ -158,21 +158,21 @@ if (checkVisaBtn && visaResult) {
         
         if (dest === 'UAE') {
             if (['US', 'UK', 'EU', 'AU'].includes(nat)) {
-                status = 'Visa on Arrival Available (30/90 Days) âœ…';
+                status = 'Visa on Arrival Available (30/90 Days) ✅';
                 bgColor = '#d1fae5'; color = '#065f46';
             } else if (['IN'].includes(nat)) {
-                status = 'Visa on Arrival (if holds US/UK/EU visa) or E-Visa Required ðŸ›‚';
+                status = 'Visa on Arrival (if holds US/UK/EU visa) or E-Visa Required 🛂';
                 bgColor = '#fef3c7'; color = '#92400e';
             } else {
-                status = 'E-Visa Required (Apply through our agency) âœˆï¸';
+                status = 'E-Visa Required (Apply through our agency) ✈️';
                 bgColor = '#fee2e2'; color = '#991b1b';
             }
         } else if (dest === 'OMAN') {
             if (['US', 'UK', 'EU', 'AU', 'IN', 'CN', 'RU'].includes(nat)) {
-                status = 'Visa Free (14 Days) or E-Visa Available âœ…';
+                status = 'Visa Free (14 Days) or E-Visa Available ✅';
                 bgColor = '#d1fae5'; color = '#065f46';
             } else {
-                status = 'Sponsored E-Visa Required ðŸ›‚';
+                status = 'Sponsored E-Visa Required 🛂';
                 bgColor = '#fee2e2'; color = '#991b1b';
             }
         }
@@ -285,16 +285,16 @@ const cityCoordinates = {
 
 // Transform WMO Weather codes to readable text
 function getWeatherDescription(code) {
-    if (code === 0) return 'Clear sky â˜€ï¸';
-    if (code === 1 || code === 2 || code === 3) return 'Partly cloudy â›…';
-    if (code === 45 || code === 48) return 'Foggy ðŸŒ«ï¸';
-    if (code >= 51 && code <= 55) return 'Drizzle ðŸŒ§ï¸';
-    if (code >= 56 && code <= 57) return 'Freezing Drizzle ðŸŒ§ï¸';
-    if (code >= 61 && code <= 65) return 'Rain â˜”';
-    if (code >= 66 && code <= 67) return 'Freezing Rain â˜”';
-    if (code >= 71 && code <= 77) return 'Snow â„ï¸';
-    if (code >= 80 && code <= 82) return 'Rain showers ðŸŒ§ï¸';
-    if (code >= 95 && code <= 99) return 'Thunderstorm â›ˆï¸';
+    if (code === 0) return 'Clear sky ☀️';
+    if (code === 1 || code === 2 || code === 3) return 'Partly cloudy ⛅';
+    if (code === 45 || code === 48) return 'Foggy 🌫️';
+    if (code >= 51 && code <= 55) return 'Drizzle 🌧️';
+    if (code >= 56 && code <= 57) return 'Freezing Drizzle 🌧️';
+    if (code >= 61 && code <= 65) return 'Rain ☔';
+    if (code >= 66 && code <= 67) return 'Freezing Rain ☔';
+    if (code >= 71 && code <= 77) return 'Snow ❄️';
+    if (code >= 80 && code <= 82) return 'Rain showers 🌧️';
+    if (code >= 95 && code <= 99) return 'Thunderstorm ⛈️';
     return 'Unknown';
 }
 
@@ -324,7 +324,7 @@ async function fetchWeather(city) {
         const data = await response.json();
         
         if (data && data.current) {
-            tempEl.innerText = `${Math.round(data.current.temperature_2m)}Â°C`;
+            tempEl.innerText = `${Math.round(data.current.temperature_2m)}°C`;
             descEl.innerText = getWeatherDescription(data.current.weather_code);
             humidityEl.innerText = data.current.relative_humidity_2m;
             windEl.innerText = data.current.wind_speed_10m;
@@ -415,7 +415,7 @@ async function fetchTravelNews() {
                 
                 card.innerHTML = `
                     <div style="height:150px; background: url('${imgUrl}') center/cover; border-radius: 8px; margin-bottom: 1rem;"></div>
-                    <div style="font-size: 0.8rem; color: var(--color-accent); font-weight: 600; margin-bottom: 0.5rem; text-transform: uppercase;">ðŸ“… ${dateStr}</div>
+                    <div style="font-size: 0.8rem; color: var(--color-accent); font-weight: 600; margin-bottom: 0.5rem; text-transform: uppercase;">📅 ${dateStr}</div>
                     <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--color-secondary); line-height: 1.3;">${item.title}</h4>
                     <p style="font-size: 0.85rem; color: var(--color-text-muted); line-height: 1.5; margin-bottom: 0;">${desc}</p>
                 `;
@@ -624,4 +624,3 @@ if (viewAllBtn && hiddenDeals.length > 0) {
         viewAllBtn.textContent = isHidden ? 'Show Less Tours' : 'View All Tours';
     });
 }
-
