@@ -298,16 +298,28 @@ function getWeatherDescription(code) {
     return 'Unknown';
 }
 
+let currentLocCoords = null;
+
 async function fetchWeather(city) {
     if (!tempEl) return;
-    const coords = cityCoordinates[city];
-    if (!coords) return;
+    
+    let lat, lon;
+    
+    if (city === 'current' && currentLocCoords) {
+        lat = currentLocCoords.lat;
+        lon = currentLocCoords.lon;
+    } else {
+        const coords = cityCoordinates[city];
+        if (!coords) return;
+        lat = coords.lat;
+        lon = coords.lon;
+    }
     
     tempEl.innerText = '...';
     descEl.innerText = 'Fetching...';
     
     try {
-        const url = `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m`;
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m`;
         const response = await fetch(url);
         const data = await response.json();
         
@@ -327,9 +339,108 @@ if (weatherCitySelect) {
     weatherCitySelect.addEventListener('change', (e) => {
         fetchWeather(e.target.value);
     });
-    // Initial fetch for default value
-    fetchWeather(weatherCitySelect.value);
+    
+    // Try to get location automatically on page load
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                currentLocCoords = {
+                    lat: position.coords.latitude,
+                    lon: position.coords.longitude
+                };
+                // Show current location option
+                const opt = document.getElementById('opt-current-loc');
+                if (opt) {
+                    opt.style.display = 'block';
+                    weatherCitySelect.value = 'current';
+                }
+                fetchWeather('current');
+            },
+            (error) => {
+                console.log("Geolocation denied or error, falling back to default.", error);
+                fetchWeather(weatherCitySelect.value);
+            }
+        );
+    } else {
+        fetchWeather(weatherCitySelect.value);
+    }
 }
+
+// --- LIVE TRAVEL NEWS ---
+async function fetchTravelNews() {
+    const newsContainer = document.getElementById('news-container');
+    if (!newsContainer) return;
+    
+    try {
+        const rssUrl = encodeURIComponent('https://rss.nytimes.com/services/xml/rss/nyt/Travel.xml?t=' + Date.now());
+        const url = 'https://api.rss2json.com/v1/api.json?rss_url=' + rssUrl;
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (data.status === 'ok' && data.items && data.items.length > 0) {
+            newsContainer.innerHTML = '';
+            // Display top 3 news items
+            const items = data.items.slice(0, 3);
+            items.forEach(item => {
+                const card = document.createElement('a');
+                card.href = item.link;
+                card.target = "_blank";
+                card.className = "news-card";
+                card.style.display = "flex";
+                card.style.flexDirection = "column";
+                card.style.padding = "1.5rem";
+                card.style.border = "1px solid rgba(0, 108, 53, 0.1)";
+                card.style.borderRadius = "12px";
+                card.style.background = "var(--color-surface)";
+                card.style.transition = "transform 0.3s, box-shadow 0.3s";
+                card.style.textDecoration = "none";
+                
+                let imgUrl = item.thumbnail || (item.enclosure && item.enclosure.link);
+                // Regex to find first image in content if thumbnail is missing
+                if (!imgUrl || imgUrl === "") {
+                    const contentStr = item.content || item.description || "";
+                    const imgMatch = contentStr.match(/<img[^>]+src="([^">]+)"/);
+                    if (imgMatch) {
+                        imgUrl = imgMatch[1];
+                    } else {
+                        imgUrl = "https://picsum.photos/seed/travel/400/200"; // Fake generic image
+                    }
+                }
+                
+                const dateObj = new Date(item.pubDate);
+                const dateStr = !isNaN(dateObj) ? dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+                
+                // Clean desc
+                let desc = (item.description || item.content || '').replace(/<[^>]+>/g, '').substring(0, 90) + '...';
+                
+                card.innerHTML = `
+                    <div style="height:150px; background: url('${imgUrl}') center/cover; border-radius: 8px; margin-bottom: 1rem;"></div>
+                    <div style="font-size: 0.8rem; color: var(--color-accent); font-weight: 600; margin-bottom: 0.5rem; text-transform: uppercase;">📅 ${dateStr}</div>
+                    <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--color-secondary); line-height: 1.3;">${item.title}</h4>
+                    <p style="font-size: 0.85rem; color: var(--color-text-muted); line-height: 1.5; margin-bottom: 0;">${desc}</p>
+                `;
+                
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = "translateY(-5px)";
+                    card.style.boxShadow = "var(--shadow-md)";
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = "none";
+                    card.style.boxShadow = "none";
+                });
+                
+                newsContainer.appendChild(card);
+            });
+        } else {
+            newsContainer.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--color-text-muted);">Currently no news available.</div>';
+        }
+    } catch (e) {
+        console.error("News fetch error", e);
+        newsContainer.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#ef4444;">Error loading travel news.</div>';
+    }
+}
+
+fetchTravelNews();
 
 // --- PLAN YOUR TRIP MODAL (WIZARD) ---
 const modal = document.getElementById('trip-modal');

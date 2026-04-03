@@ -403,8 +403,9 @@
                     <div class="form-group">
                         <label style="display:block; margin-bottom: 0.5rem; color: var(--color-text-main); font-weight: 600;">Select City</label>
                         <select id="weather-city" class="form-control" style="font-size: 0.95rem;">
+                            <option value="current" id="opt-current-loc" style="display: none; color: var(--color-primary); font-weight: 800;">📍 Current Location</option>
                             <optgroup label="Middle East & Africa">
-                                <option value="dubai">Dubai, UAE</option>
+                                <option value="dubai" selected>Dubai, UAE</option>
                                 <option value="abu_dhabi">Abu Dhabi, UAE</option>
                                 <option value="muscat">Muscat, Oman</option>
                                 <option value="doha">Doha, Qatar</option>
@@ -463,6 +464,14 @@
                             <span title="Humidity">💧 <span id="weather-humidity">--</span>%</span>
                             <span title="Wind Speed">💨 <span id="weather-wind">--</span> km/h</span>
                         </div>
+                    </div>
+                </div>
+                
+                <!-- Live Travel News Widget -->
+                <div class="tool-card glass-panel" style="padding: 2.5rem; background: var(--color-bg); grid-column: 1 / -1;">
+                    <h3 class="tool-title" style="margin-bottom: 1.5rem;">🌍 Latest Travel News</h3>
+                    <div id="news-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                        <div style="text-align: center; color: var(--color-text-muted); padding: 2rem; grid-column: 1/-1;">Loading latest headlines...</div>
                     </div>
                 </div>
             </div>
@@ -722,6 +731,6 @@
         </svg>
     </a>
 
-    <script src="script.js?v=3.0"></script>
+    <script src="script.js?v=3.1"></script>
 </body>
 </html>
