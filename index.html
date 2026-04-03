@@ -137,16 +137,17 @@
                     </div>
                 </div>
                 
-                <form class="contact-form" action="#" method="POST" onsubmit="event.preventDefault(); alert('Message feature coming soon!');">
+                <form class="contact-form" id="contactForm">
                     <h3 class="form-title">Send a Message</h3>
+                    <div id="form-message" style="display: none; padding: 10px; margin-bottom: 15px; border-radius: 5px; text-align: center;"></div>
                     <div class="form-group">
-                        <input type="text" id="name" class="form-control" placeholder="Your Name" required>
+                        <input type="text" name="Name" id="name" class="form-control" placeholder="Your Name" required>
                     </div>
                     <div class="form-group">
-                        <input type="email" id="email" class="form-control" placeholder="Your Email" required>
+                        <input type="email" name="Email" id="email" class="form-control" placeholder="Your Email" required>
                     </div>
                     <div class="form-group">
-                        <textarea id="message" class="form-control" rows="4" placeholder="How can we help you?" required></textarea>
+                        <textarea name="Message" id="message" class="form-control" rows="4" placeholder="How can we help you?" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary btn-full">Send Request</button>
                 </form>
