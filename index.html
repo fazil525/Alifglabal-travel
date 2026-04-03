@@ -30,10 +30,16 @@
                 <ul class="nav-list">
                     <li><a href="#hero" class="nav-link">Home</a></li>
                     <li><a href="#services" class="nav-link">Services</a></li>
+                    <li><a href="#tools" class="nav-link">Travel Tools</a></li>
+                    <li><a href="#faq" class="nav-link">FAQ</a></li>
                     <li><a href="#contact" class="nav-link">Contact</a></li>
                 </ul>
             </nav>
-            <a href="#contact" class="btn btn-primary nav-cta">Book Now</a>
+            <div class="nav-actions">
+                <div id="google_translate_element" class="translate-widget"></div>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark Mode">🌙</button>
+                <button id="open-modal-btn" class="btn btn-primary nav-cta">Plan Your Trip</button>
+            </div>
             <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation">
                 <span></span>
                 <span></span>
@@ -99,6 +105,105 @@
                     <div class="service-icon">🌐</div>
                     <h3 class="service-title">Global Visa Services</h3>
                     <p class="service-text">Expert assistance and processing for travel visas to numerous international destinations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Travel Tools Section (Visa & Currency) -->
+    <section class="tools section" id="tools" style="background-color: var(--color-surface);">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Smart Travel Tools</h2>
+                <div class="divider"></div>
+                <p class="section-desc">Quickly check your visa requirements and convert currencies for your trip.</p>
+            </div>
+            
+            <div class="tools-grid">
+                <!-- Visa Form -->
+                <div class="tool-card glass-panel" style="padding: 2.5rem; background: var(--color-bg);">
+                    <h3 class="tool-title" style="margin-bottom: 1.5rem;">🛂 Visa Eligibility Checker</h3>
+                    <div class="form-group">
+                        <label for="nationality" style="display:block; margin-bottom: 0.5rem; color: var(--color-text-main); font-weight: 600;">Your Nationality</label>
+                        <select id="nationality" class="form-control">
+                            <option value="">Select Nationality...</option>
+                            <option value="US">United States</option>
+                            <option value="UK">United Kingdom</option>
+                            <option value="IN">India</option>
+                            <option value="PK">Pakistan</option>
+                            <option value="PH">Philippines</option>
+                            <option value="RU">Russia</option>
+                            <option value="CN">China</option>
+                            <option value="EU">European Union</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="destination" style="display:block; margin-bottom: 0.5rem; color: var(--color-text-main); font-weight: 600;">Destination</label>
+                        <select id="destination" class="form-control">
+                            <option value="">Select Destination...</option>
+                            <option value="UAE">United Arab Emirates</option>
+                            <option value="OMAN">Oman</option>
+                        </select>
+                    </div>
+                    <button id="check-visa-btn" class="btn btn-primary btn-full" style="margin-top: 1rem;">Check Requirement</button>
+                    <div id="visa-result" class="tool-result" style="display: none; margin-top: 1.5rem; padding: 1rem; border-radius: 8px; text-align: center; font-weight: bold;"></div>
+                </div>
+
+                <!-- Currency Form -->
+                <div class="tool-card glass-panel" style="padding: 2.5rem; background: var(--color-bg);">
+                    <h3 class="tool-title" style="margin-bottom: 1.5rem;">💱 Currency Converter</h3>
+                    <div class="form-group">
+                        <label style="display:block; margin-bottom: 0.5rem; color: var(--color-text-main); font-weight: 600;">Amount & From</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="number" id="currency-amount" class="form-control" placeholder="100" value="100" style="flex: 1;">
+                            <select id="currency-from" class="form-control" style="width: auto;">
+                                <option value="USD">USD</option>
+                                <option value="EUR">EUR</option>
+                                <option value="GBP">GBP</option>
+                                <option value="INR">INR</option>
+                                <option value="AED" selected>AED</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label style="display:block; margin-bottom: 0.5rem; color: var(--color-text-main); font-weight: 600;">To Amount</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="currency-result" class="form-control" placeholder="Result" readonly style="flex: 1; background-color: var(--color-surface); cursor: not-allowed;">
+                            <select id="currency-to" class="form-control" style="width: auto;">
+                                <option value="USD" selected>USD</option>
+                                <option value="EUR">EUR</option>
+                                <option value="GBP">GBP</option>
+                                <option value="INR">INR</option>
+                                <option value="AED">AED</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button id="convert-btn" class="btn btn-outline btn-full" style="margin-top: 1rem; color: var(--color-primary); border-color: var(--color-primary);">Convert Currency</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq section" id="faq">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <div class="divider"></div>
+            </div>
+            <div class="faq-container" style="max-width: 800px; margin: 0 auto;">
+                <div class="faq-item">
+                    <button class="faq-question">How long does it take to process a UAE Tourist Visa? <span class="icon" style="float: right;">+</span></button>
+                    <div class="faq-answer"><p>Standard processing typically takes 2 to 3 working days. We also offer express processing services if you need your visa urgently.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">What is included in your inbound tours? <span class="icon" style="float: right;">+</span></button>
+                    <div class="faq-answer"><p>Our inbound tours generally include airport transfers, accommodation, guided sightseeing, and selected attraction tickets. Custom packages are also available.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Can I change my visa status without leaving the country? <span class="icon" style="float: right;">+</span></button>
+                    <div class="faq-answer"><p>Yes! We offer inside-country visa change services via bus to neighboring countries (like Oman) or affordable airport-to-airport visa change flights.</p></div>
                 </div>
             </div>
         </div>
@@ -178,6 +283,74 @@
             </div>
         </div>
     </footer>
+
+    <!-- Plan Your Trip Modal (Wizard) -->
+    <div id="trip-modal" class="modal-overlay">
+        <div class="modal-content glass-panel" style="background: var(--color-surface);">
+            <span class="close-modal">&times;</span>
+            <div class="modal-header">
+                <h3 style="font-family: var(--font-heading); font-size: 2rem; color: var(--color-secondary);">Plan Your Trip</h3>
+                <div class="step-indicator">
+                    <div class="step active">1</div><div class="step-line"></div>
+                    <div class="step">2</div><div class="step-line"></div>
+                    <div class="step">3</div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <form id="tripForm">
+                    <div id="trip-form-message" style="display: none; padding: 10px; margin-bottom: 15px; border-radius: 5px; text-align: center;"></div>
+                    <!-- Step 1 -->
+                    <div class="wizard-step active" id="step-1">
+                        <h4 style="margin-bottom: 1rem; color: var(--color-text-main);">Where do you want to go?</h4>
+                        <select name="Destination" id="wizard-dest" class="form-control" style="margin-bottom: 1.5rem;" required>
+                            <option value="UAE">United Arab Emirates</option>
+                            <option value="OMAN">Oman</option>
+                            <option value="EUROPE">Europe</option>
+                            <option value="ASIA">Asia</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                        <button type="button" class="btn btn-primary btn-full next-step">Next Step: Travelers</button>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="wizard-step" id="step-2" style="display: none;">
+                        <h4 style="margin-bottom: 1rem; color: var(--color-text-main);">Who is traveling?</h4>
+                        <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                            <div style="flex: 1;">
+                                <label style="display:block; font-size: 0.9rem; margin-bottom:0.3rem; color: var(--color-text-main);">Adults</label>
+                                <input type="number" name="Adults" class="form-control" value="1" min="1" required>
+                            </div>
+                            <div style="flex: 1;">
+                                <label style="display:block; font-size: 0.9rem; margin-bottom:0.3rem; color: var(--color-text-main);">Children</label>
+                                <input type="number" name="Children" class="form-control" value="0" min="0" required>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 1rem;">
+                            <button type="button" class="btn btn-outline prev-step" style="flex: 1; color: var(--color-text-main); border-color: var(--color-text-muted);">Back</button>
+                            <button type="button" class="btn btn-primary next-step" style="flex: 2;">Next Step: Contact</button>
+                        </div>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="wizard-step" id="step-3" style="display: none;">
+                        <h4 style="margin-bottom: 1rem; color: var(--color-text-main);">Your Details</h4>
+                        <input type="text" name="Name" class="form-control" placeholder="Full Name" style="margin-bottom: 1rem; width: 100%;" required>
+                        <input type="email" name="Email" class="form-control" placeholder="Email Address" style="margin-bottom: 1.5rem; width: 100%;" required>
+                        <div style="display: flex; gap: 1rem;">
+                            <button type="button" class="btn btn-outline prev-step" style="flex: 1; color: var(--color-text-main); border-color: var(--color-text-muted);">Back</button>
+                            <button type="submit" class="btn btn-primary" style="flex: 2;">Submit Request</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google Translate Script -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false}, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <script src="script.js"></script>
 </body>

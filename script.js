@@ -90,3 +90,255 @@ if (contactForm) {
             });
     });
 }
+
+// --- DARK MODE TOGGLE ---
+const themeToggle = document.getElementById('theme-toggle');
+const htmlEl = document.documentElement;
+let isDarkTheme = localStorage.getItem('theme') === 'dark';
+
+if (isDarkTheme) {
+    htmlEl.setAttribute('data-theme', 'dark');
+    themeToggle.innerText = '☀️';
+} else {
+    themeToggle.innerText = '🌙';
+}
+
+if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+        isDarkTheme = !isDarkTheme;
+        if (isDarkTheme) {
+            htmlEl.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            themeToggle.innerText = '☀️';
+        } else {
+            htmlEl.removeAttribute('data-theme');
+            localStorage.removeItem('theme');
+            themeToggle.innerText = '🌙';
+        }
+    });
+}
+
+// --- FAQ ACCORDION ---
+const faqItems = document.querySelectorAll('.faq-item');
+faqItems.forEach(item => {
+    const question = item.querySelector('.faq-question');
+    if (question) {
+        question.addEventListener('click', () => {
+            // Close others
+            faqItems.forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.classList.remove('active');
+                }
+            });
+            item.classList.toggle('active');
+        });
+    }
+});
+
+// --- VISA ELIGIBILITY CHECKER ---
+const checkVisaBtn = document.getElementById('check-visa-btn');
+const visaResult = document.getElementById('visa-result');
+
+if (checkVisaBtn && visaResult) {
+    checkVisaBtn.addEventListener('click', () => {
+        const nat = document.getElementById('nationality').value;
+        const dest = document.getElementById('destination').value;
+        
+        if (!nat || !dest) {
+            visaResult.innerText = "Please select both nationality and destination.";
+            visaResult.style.display = 'block';
+            visaResult.style.backgroundColor = 'var(--color-bg)';
+            visaResult.style.color = 'var(--color-text-main)';
+            return;
+        }
+        
+        let status = '';
+        let bgColor = '';
+        let color = '';
+        
+        if (dest === 'UAE') {
+            if (['US', 'UK', 'EU', 'AU'].includes(nat)) {
+                status = 'Visa on Arrival Available (30/90 Days) ✅';
+                bgColor = '#d1fae5'; color = '#065f46';
+            } else if (['IN'].includes(nat)) {
+                status = 'Visa on Arrival (if holds US/UK/EU visa) or E-Visa Required 🛂';
+                bgColor = '#fef3c7'; color = '#92400e';
+            } else {
+                status = 'E-Visa Required (Apply through our agency) ✈️';
+                bgColor = '#fee2e2'; color = '#991b1b';
+            }
+        } else if (dest === 'OMAN') {
+            if (['US', 'UK', 'EU', 'AU', 'IN', 'CN', 'RU'].includes(nat)) {
+                status = 'Visa Free (14 Days) or E-Visa Available ✅';
+                bgColor = '#d1fae5'; color = '#065f46';
+            } else {
+                status = 'Sponsored E-Visa Required 🛂';
+                bgColor = '#fee2e2'; color = '#991b1b';
+            }
+        }
+        
+        visaResult.innerText = status;
+        visaResult.style.display = 'block';
+        visaResult.style.backgroundColor = bgColor;
+        visaResult.style.color = color;
+    });
+}
+
+// --- CURRENCY CONVERTER (Live API Integration) ---
+const convertBtn = document.getElementById('convert-btn');
+if (convertBtn) {
+    convertBtn.addEventListener('click', async () => {
+        const amount = parseFloat(document.getElementById('currency-amount').value);
+        const from = document.getElementById('currency-from').value;
+        const to = document.getElementById('currency-to').value;
+        const resultInput = document.getElementById('currency-result');
+        
+        if (isNaN(amount)) return;
+        
+        // Show loading state
+        const originalText = convertBtn.innerText;
+        convertBtn.innerText = "Fetching Live Rates...";
+        convertBtn.disabled = true;
+        resultInput.value = "Loading...";
+
+        try {
+            // Using a free, public exchange rate API
+            const response = await fetch(`https://open.er-api.com/v6/latest/${from}`);
+            const data = await response.json();
+            
+            if(data && data.rates && data.rates[to]) {
+                const rate = data.rates[to];
+                const finalAmount = amount * rate;
+                resultInput.value = finalAmount.toFixed(2);
+            } else {
+                resultInput.value = "Error fetching rate";
+            }
+        } catch (error) {
+            console.error("Currency API Error:", error);
+            resultInput.value = "Error fetching rate";
+        } finally {
+            convertBtn.innerText = originalText;
+            convertBtn.disabled = false;
+        }
+    });
+}
+
+// --- PLAN YOUR TRIP MODAL (WIZARD) ---
+const modal = document.getElementById('trip-modal');
+const openBtn = document.getElementById('open-modal-btn');
+const closeBtn = document.querySelector('.close-modal');
+const steps = document.querySelectorAll('.wizard-step');
+const indicators = document.querySelectorAll('.step');
+const lines = document.querySelectorAll('.step-line');
+let currentStep = 0;
+
+if (modal && openBtn && closeBtn) {
+    openBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Stop background scrolling
+        showStep(0);
+    });
+
+    closeBtn.addEventListener('click', () => {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    });
+    
+    // Close on overlay click
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
+}
+
+document.querySelectorAll('.next-step').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        showStep(currentStep + 1);
+    });
+});
+document.querySelectorAll('.prev-step').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        showStep(currentStep - 1);
+    });
+});
+
+function showStep(index) {
+    if (index < 0 || index >= steps.length) return;
+    
+    // Hide current
+    if(steps[currentStep]) {
+        steps[currentStep].style.display = 'none';
+        steps[currentStep].classList.remove('active');
+    }
+    
+    // Show new
+    currentStep = index;
+    if(steps[currentStep]) {
+        steps[currentStep].style.display = 'block';
+        setTimeout(() => steps[currentStep].classList.add('active'), 10);
+    }
+    
+    // Update indicators
+    indicators.forEach((ind, i) => {
+        if (i <= currentStep) ind.classList.add('active');
+        else ind.classList.remove('active');
+    });
+    
+    lines.forEach((line, i) => {
+        if (i < currentStep) line.classList.add('active');
+        else line.classList.remove('active');
+    });
+}
+
+// --- TRIP FORM SUBMISSION ---
+const tripForm = document.getElementById('tripForm');
+const tripFormMessage = document.getElementById('trip-form-message');
+
+if (tripForm) {
+    tripForm.addEventListener('submit', function (e) {
+        e.preventDefault(); 
+
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyPYDpObYGGE754KEoLAYrgzKSvtdz3ZQ5Ifu7f8mYm_I8Z3jQMhsgRvJJhfDuju_DL/exec';
+
+        tripFormMessage.style.display = 'block';
+        tripFormMessage.style.backgroundColor = '#eef2ff';
+        tripFormMessage.style.color = '#4338ca';
+        tripFormMessage.innerText = 'Sending your request...';
+
+        const submitButton = tripForm.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+
+        fetch(scriptURL, {
+            method: 'POST',
+            body: new FormData(tripForm)
+        })
+            .then(response => {
+                tripFormMessage.style.backgroundColor = '#d1fae5';
+                tripFormMessage.style.color = '#065f46';
+                tripFormMessage.innerText = 'Success! Our agents will contact you shortly.';
+                tripForm.reset();
+                submitButton.disabled = false;
+                
+                // Return to step 1
+                showStep(0);
+
+                setTimeout(() => {
+                    tripFormMessage.style.display = 'none';
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
+                }, 3000);
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+                tripFormMessage.style.backgroundColor = '#fee2e2';
+                tripFormMessage.style.color = '#991b1b';
+                tripFormMessage.innerText = 'Oops! Something went wrong. Please try again.';
+                submitButton.disabled = false;
+            });
+    });
+}
