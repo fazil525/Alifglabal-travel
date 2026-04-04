@@ -945,10 +945,13 @@ h1, h2, h3, h4 {
     position: relative;
 }
 
-.dropdown-toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
+
+
+.dropdown-caret {
+    display: inline-block;
+    margin-left: 0.25rem;
+    vertical-align: middle;
+    font-size: 0.9em;
 }
 
 .nav-dropdown:hover .nav-dropdown-menu {
