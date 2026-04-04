@@ -634,3 +634,47 @@ if (viewAllBtn && hiddenDeals.length > 0) {
         viewAllBtn.textContent = isHidden ? 'Show Less Tours' : 'View All Tours';
     });
 }
+
+// --- GLOBAL EMERGENCY NUMBERS ---
+const emergencyCountryInput = document.getElementById('emergency-country');
+const emergencyResult = document.getElementById('emergency-result');
+const emergencyCountryName = document.getElementById('emergency-country-name');
+const emergencyPolice = document.getElementById('emergency-police');
+const emergencyAmbulance = document.getElementById('emergency-ambulance');
+const emergencyFire = document.getElementById('emergency-fire');
+
+if (emergencyCountryInput && emergencyResult) {
+    emergencyCountryInput.addEventListener('input', (e) => {
+        const country = e.target.value.trim();
+        if (typeof countryList !== 'undefined' && countryList.includes(country)) {
+            let nums = { police: "112", ambulance: "112", fire: "112" }; // Default (EU/GSM)
+            
+            if (country === 'United Arab Emirates') nums = { police: "999", ambulance: "998", fire: "997" };
+            else if (['Oman', 'Qatar', 'Bahrain'].includes(country)) nums = { police: "9999", ambulance: "9999", fire: "9999" };
+            else if (country === 'Saudi Arabia') nums = { police: "999", ambulance: "997", fire: "998" };
+            else if (country === 'India') nums = { police: "100", ambulance: "108", fire: "101" };
+            else if (['United States of America', 'Canada', 'Mexico', 'Philippines'].includes(country)) nums = { police: "911", ambulance: "911", fire: "911" };
+            else if (['United Kingdom', 'Ireland', 'Singapore', 'Malaysia', 'Bangladesh'].includes(country)) nums = { police: "999", ambulance: "999", fire: "999" };
+            else if (country === 'Australia') nums = { police: "000", ambulance: "000", fire: "000" };
+            else if (country === 'New Zealand') nums = { police: "111", ambulance: "111", fire: "111" };
+            else if (country === 'Pakistan') nums = { police: "15", ambulance: "115", fire: "16" };
+            else if (country === 'China') nums = { police: "110", ambulance: "120", fire: "119" };
+            else if (country === 'Japan') nums = { police: "110", ambulance: "119", fire: "119" };
+            else if (country === 'South Korea') nums = { police: "112", ambulance: "119", fire: "119" };
+            else if (country === 'Russia') nums = { police: "102", ambulance: "103", fire: "101" };
+            else if (country === 'South Africa') nums = { police: "10111", ambulance: "10177", fire: "10111" };
+            else if (country === 'Brazil') nums = { police: "190", ambulance: "192", fire: "193" };
+            else if (country === 'Egypt') nums = { police: "122", ambulance: "123", fire: "180" };
+            else if (country === 'Argentina') nums = { police: "911", ambulance: "107", fire: "100" };
+            
+            emergencyCountryName.innerText = country + " Emergency Numbers";
+            emergencyPolice.innerText = nums.police;
+            emergencyAmbulance.innerText = nums.ambulance;
+            emergencyFire.innerText = nums.fire;
+            emergencyResult.style.display = 'block';
+        } else {
+            emergencyResult.style.display = 'none';
+        }
+    });
+}
+
